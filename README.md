@@ -6,6 +6,8 @@ A priority queue that shuffles elements with the same priority.
 npm install shuffled-priority-queue
 ```
 
+[![Build Status](https://travis-ci.org/mafintosh/shuffled-priority-queue.svg?branch=master)](https://travis-ci.org/mafintosh/shuffled-priority-queue)
+
 ## Usage
 
 ``` js
