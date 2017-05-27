@@ -1,0 +1,26 @@
+{
+  "name": "shuffled-priority-queue",
+  "version": "0.0.0",
+  "description": "A priority queue that shuffles elements with the same priority.",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard && tape test.js"
+  },
+  "dependencies": {
+    "unordered-set": "^2.0.0"
+  },
+  "devDependencies": {
+    "standard": "^10.0.2",
+    "tape": "^4.6.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mafintosh/shuffled-priority-queue.git"
+  },
+  "author": "Mathias Buus (@mafintosh)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mafintosh/shuffled-priority-queue/issues"
+  },
+  "homepage": "https://github.com/mafintosh/shuffled-priority-queue"
+}
