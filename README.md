@@ -11,8 +11,8 @@ npm install shuffled-priority-queue
 ## Usage
 
 ``` js
-var spq = require('shuffled-priority-queue')
-var queue = spq()
+const spq = require('shuffled-priority-queue')
+const queue = spq()
 
 queue.add({
   priority: 0,
@@ -34,16 +34,16 @@ queue.add({
   value: 'verden'
 })
 
-console.log(queue.pop()) // returns {value: 'verden'}
-console.log(queue.pop()) // returns {value: 'welt'}
-console.log(queue.pop()) // returns {value: 'hello'} or {value: 'world'}
-console.log(queue.pop()) // returns {value: 'hello'} or {value: 'world'}
-console.log(queue.pop()) // returns null (empty queue)
+console.log(queue.shift()) // returns {value: 'verden'}
+console.log(queue.shift()) // returns {value: 'welt'}
+console.log(queue.shift()) // returns {value: 'hello'} or {value: 'world'}
+console.log(queue.shift()) // returns {value: 'hello'} or {value: 'world'}
+console.log(queue.shift()) // returns null (empty queue)
 ```
 
 ## API
 
-#### `var queue = spq()`
+#### `const queue = spq()`
 
 Create a new queue.
 
@@ -56,29 +56,39 @@ If you set `value.priority` to a number, it'll be added to the queue at that pri
 
 Remove a value from the queue.
 
-#### `value = queue.pop()`
-
-Pop the value with the highest priority off the queue.
-If multiple values have the same priority a random one is popped.
-
-#### `value = queue.last()`
-
-Same as `pop()` but does not mutate the queue.
-
 #### `value = queue.shift()`
 
-Same as `pop()` but returns a value with the lowest priority.
+Shift the next value off the queue.
 
-#### `value = queue.first()`
+The value returned will have the highest priority off the queue.
+If multiple values have the same priority a random one is returned.
+
+#### `value = queue.head()`
 
 Same as `shift()` but does not mutate the queue.
 
+#### `value = queue.pop()`
+
+Same as `shift()` but returns a value with the lowest priority.
+
+#### `value = queue.tail()`
+
+Same as `pop()` but does not mutate the queue.
+
+#### `queue.length`
+
+Property containing how many items are in the queue
+
+#### `for (const value of queue)`
+
+Iterate the queue from highest priority to lowest using the `for of` syntax
+
 #### `value = queue.next([prevValue])`
 
-Iterate the queue from lowest priority to highest.
+Iterate the queue from highest priority to lowest.
 
 ``` js
-var prevValue = null
+let prevValue = null
 
 while (prevValue = queue.next(prevValue)) {
   console.log('value:', prevValue)
@@ -87,10 +97,10 @@ while (prevValue = queue.next(prevValue)) {
 
 #### `value = queue.prev([prevValue])`
 
-Iterate the queue from highest priority to lowest.
+Iterate the queue from lowest priority to highest.
 
 ``` js
-var prevValue = null
+let prevValue = null
 
 while (prevValue = queue.prev(prevValue)) {
   console.log('value:', prevValue)

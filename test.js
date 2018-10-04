@@ -1,122 +1,125 @@
-var spq = require('./')
-var tape = require('tape')
+const spq = require('./')
+const tape = require('tape')
 
 tape('different prios', function (t) {
-  var queue = spq()
+  const queue = spq()
 
-  var a = queue.add({
+  const a = queue.add({
     hello: 'world',
     priority: 0
   })
 
-  var b = queue.add({
+  const b = queue.add({
     hej: 'verden',
     priority: 1
   })
 
-  t.same(queue.pop(), b)
-  t.same(queue.pop(), a)
-  t.same(queue.pop(), null)
+  t.same(queue.length, 2)
+  t.same(queue.shift(), b)
+  t.same(queue.length, 1)
+  t.same(queue.shift(), a)
+  t.same(queue.length, 0)
+  t.same(queue.shift(), null)
   t.end()
 })
 
 tape('same prios', function (t) {
-  var queue = spq()
+  const queue = spq()
 
-  var a = queue.add({
+  const a = queue.add({
     hello: 'world',
     priority: 0
   })
 
-  var b = queue.add({
+  const b = queue.add({
     hello: 'verden',
     priority: 0
   })
 
-  var c = queue.add({
+  const c = queue.add({
     hej: 'verden',
     priority: 1
   })
 
-  t.same(queue.pop(), c)
+  t.same(queue.shift(), c)
 
-  var top = queue.pop()
-  t.ok(top === a || top === b)
+  let head = queue.shift()
+  t.ok(head === a || head === b)
 
-  top = queue.pop()
-  t.ok(top === a || top === b)
+  head = queue.shift()
+  t.ok(head === a || head === b)
 
-  t.same(queue.pop(), null)
-  t.end()
-})
-
-tape('prev', function (t) {
-  var queue = spq()
-
-  var a = queue.add({
-    hello: 'world',
-    priority: 0
-  })
-
-  var b = queue.add({
-    hello: 'verden',
-    priority: 0
-  })
-
-  var c = queue.add({
-    hej: 'verden',
-    priority: 1
-  })
-
-  t.same(queue.prev(), c)
-
-  var top = queue.prev(c)
-  t.ok(top === a || top === b)
-
-  var old = top
-  top = queue.prev(top)
-  t.ok(old !== top)
-  t.ok(top === a || top === b)
-
-  t.same(queue.prev(top), null)
+  t.same(queue.shift(), null)
   t.end()
 })
 
 tape('next', function (t) {
-  var queue = spq()
+  const queue = spq()
 
-  var a = queue.add({
+  const a = queue.add({
     hello: 'world',
     priority: 0
   })
 
-  var b = queue.add({
+  const b = queue.add({
     hello: 'verden',
     priority: 0
   })
 
-  var c = queue.add({
+  const c = queue.add({
     hej: 'verden',
     priority: 1
   })
 
-  var top = queue.next()
-  t.ok(top === a || top === b)
+  t.same(queue.next(), c)
 
-  var old = top
-  top = queue.next(top)
-  t.ok(old !== top)
-  t.ok(top === a || top === b)
+  let value = queue.next(c)
+  t.ok(value === a || value === b)
 
-  top = queue.next(top)
-  t.same(top, c)
+  const old = value
+  value = queue.next(value)
+  t.ok(old !== value)
+  t.ok(value === a || value === b)
 
-  t.same(queue.next(top), null)
+  t.same(queue.next(value), null)
+  t.end()
+})
+
+tape('prev', function (t) {
+  const queue = spq()
+
+  const a = queue.add({
+    hello: 'world',
+    priority: 0
+  })
+
+  const b = queue.add({
+    hello: 'verden',
+    priority: 0
+  })
+
+  const c = queue.add({
+    hej: 'verden',
+    priority: 1
+  })
+
+  let tail = queue.prev()
+  t.ok(tail === a || tail === b)
+
+  const old = tail
+  tail = queue.prev(tail)
+  t.ok(old !== tail)
+  t.ok(tail === a || tail === b)
+
+  tail = queue.prev(tail)
+  t.same(tail, c)
+
+  t.same(queue.prev(tail), null)
   t.end()
 })
 
 tape('equals', function (t) {
-  var queue = spq({
+  const queue = spq({
     equals: function (a, b) {
       return a.hello === b.hello
     }
@@ -126,12 +129,34 @@ tape('equals', function (t) {
     hello: 'world'
   })
 
-  t.same(queue.first().hello, 'world')
+  t.same(queue.head().hello, 'world')
 
   queue.remove({
     hello: 'world'
   })
 
-  t.same(queue.first(), null)
+  t.same(queue.head(), null)
   t.end()
+})
+
+tape('iterator', function (t) {
+  t.plan(5)
+
+  const queue = spq()
+  const seen = {}
+
+  queue.add({ priority: 0, hi: 'a' })
+  queue.add({ priority: 0, hi: 'b' })
+  queue.add({ priority: 1, hi: 'c' })
+  queue.add({ priority: 2, hi: 'd' })
+
+  let prev = 3
+
+  for (const value of queue) {
+    t.ok(prev >= value.priority)
+    prev = value.priority
+    seen[value.hi] = true
+  }
+
+  t.same(seen, { a: true, b: true, c: true, d: true })
 })
