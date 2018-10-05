@@ -1,6 +1,6 @@
 {
   "name": "shuffled-priority-queue",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "A priority queue that shuffles elements with the same priority.",
   "main": "index.js",
   "scripts": {
