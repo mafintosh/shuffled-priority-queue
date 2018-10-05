@@ -68,6 +68,13 @@ class ShuffledPriorityQueue {
     return set.remove(this.priorities[val.priority || 0], val)
   }
 
+  has (val) {
+    if (val._index === undefined) return this.find(val)
+    const priority = val.priority || 0
+    if (priority >= this.priorities.length) return false
+    return set.has(this.priorities[priority], val)
+  }
+
   find (val) {
     if (val._index !== undefined) return val
 

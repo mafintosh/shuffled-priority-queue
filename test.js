@@ -14,8 +14,10 @@ tape('different prios', function (t) {
     priority: 1
   })
 
+  t.ok(queue.has(b))
   t.same(queue.length, 2)
   t.same(queue.shift(), b)
+  t.ok(!queue.has(b))
   t.same(queue.length, 1)
   t.same(queue.shift(), a)
   t.same(queue.length, 0)

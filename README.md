@@ -56,6 +56,10 @@ If you set `value.priority` to a number, it'll be added to the queue at that pri
 
 Remove a value from the queue.
 
+#### `bool = queue.has(value)`
+
+Check if a value is in the queue.
+
 #### `value = queue.shift()`
 
 Shift the next value off the queue.
